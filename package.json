@@ -1,0 +1,14 @@
+{
+  "name": "simple_ip_ws",
+  "version": "1.0",
+  "description": "Simple WS to get my public ip",
+  "main": "/",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "julien-beguier",
+  "license": "ISC",
+  "dependencies": {
+    "ipaddr.js": "^2.0.0"
+  }
+}
