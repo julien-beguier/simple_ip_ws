@@ -1,13 +1,18 @@
 {
   "name": "simple_ip_ws",
-  "version": "1.0",
-  "description": "Simple WS to get my public ip",
-  "main": "/",
+  "version": "1.0.0",
+  "description": "A simple WS that return the caller ip adress",
+  "main": "simple_ip_ws.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node simple_ip_ws.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/julien-beguier/simple_ip_ws"
+  },
+  "keywords": [],
   "author": "julien-beguier",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "ipaddr.js": "^2.0.0"
   }
