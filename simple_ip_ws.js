@@ -20,34 +20,42 @@ function logError(ip, msg) {
 }
 
 // Create web server
-var server = http.createServer(function (req, res) {
-    // Getting ip from request
-    var ipString = req.connection.remoteAddress;
-    if (ipaddr.IPv6.isValid(ipString)) {
-      var ip = ipaddr.IPv6.parse(ipString);
-      if (ip.isIPv4MappedAddress()) {
-        ipString = ip.toIPv4Address().toString();
-      }
+var server = http.createServer(function (request, response) {
+
+  // If service is accessed from a browser, it will receive a request to get the favicon.ico but we don't want it logged
+  if (request.url == '/favicon.ico') {
+    response.writeHead(404);
+    response.end();
+    return;
+  }
+
+  // Getting ip from request
+  var ip_string = request.connection.remoteAddress;
+  if (ipaddr.IPv6.isValid(ip_string)) {
+    var ip_tmp = ipaddr.IPv6.parse(ip_string);
+    if (ip_tmp.isIPv4MappedAddress()) {
+      ip_string = ip_tmp.toIPv4Address().toString();
     }
+  }
 
-  if (req.method == 'GET') {
-    if (req.url == '/') { // check the URL of the current request
+  if (request.method == 'GET') {
+    if (request.url == '/') { // check the URL of the current request
 
-      logInfo(ipString, 'Received request ' + req.method);
+      logInfo(ip_string, 'Received request ' + request.method);
 
       // Set response header
-      res.writeHead(200, { 'Content-Type': 'application/json' });
+      response.writeHead(200, { 'Content-Type': 'application/json' });
 
       // Set response content
-      res.write(JSON.stringify({ ip: ipString }));
-      res.end();
+      response.write(JSON.stringify({ ip: ip_string }));
+      response.end();
     } else {
-      logError(ipString, 'Invalid request received PATH=' + req.url);
-      res.end();
+      logError(ip_string, 'Invalid request received PATH=' + request.url);
+      response.end();
     }
   } else {
-    logError(ipString, 'Invalid request received METHOD=' + req.method);
-    res.end();
+    logError(ip_string, 'Invalid request received METHOD=' + request.method);
+    response.end();
   }
 });
 
