@@ -12,11 +12,15 @@ const logger = new winston.createLogger({
 });
 
 function logInfo(ip, msg) {
-  logger.info('[' + ip + '] : ' + msg);
+  logger.info('[' + ip + '] ' + msg);
+}
+
+function logWarn(ip, msg) {
+  logger.warn('[' + ip + '] ' + msg);
 }
 
 function logError(ip, msg) {
-  logger.error('[' + ip + '] : ' + msg);
+  logger.error('[' + ip + '] ' + msg);
 }
 
 // Create web server
@@ -50,11 +54,11 @@ var server = http.createServer(function (request, response) {
       response.write(JSON.stringify({ ip: ip_string }));
       response.end();
     } else {
-      logError(ip_string, 'Invalid request received PATH=' + request.url);
+      logWarn(ip_string, 'Ignoring invalid request PATH=' + request.url);
       response.end();
     }
   } else {
-    logError(ip_string, 'Invalid request received METHOD=' + request.method);
+    logWarn(ip_string, 'Ignoring invalid request METHOD=' + request.method);
     response.end();
   }
 });
@@ -63,4 +67,4 @@ var server = http.createServer(function (request, response) {
 var server_port = 7380;
 
 server.listen(server_port);
-console.log('Simple IP WS launched on ' + server_port);
+logInfo('system', 'Simple IP WS launched on ' + server_port);
