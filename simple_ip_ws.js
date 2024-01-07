@@ -34,7 +34,7 @@ var server = http.createServer(function (request, response) {
   }
 
   // Getting ip from request
-  var ip_string = request.connection.remoteAddress;
+  var ip_string = request.socket.remoteAddress;
   if (ipaddr.IPv6.isValid(ip_string)) {
     var ip_tmp = ipaddr.IPv6.parse(ip_string);
     if (ip_tmp.isIPv4MappedAddress()) {
