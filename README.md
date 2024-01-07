@@ -5,7 +5,7 @@ This is a really simple WS that return the caller ip in a Json format :<br><br>
 
 ### Install
 
-Run
+Run:
 ```bash
 npm install
 ```
