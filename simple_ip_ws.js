@@ -3,7 +3,6 @@ const ipaddr = require('ipaddr.js'); // Import ipaddr.js
 const winston = require('winston'); // Import Winston logger
 
 const logger = new winston.createLogger({
-  level: 'info',
   format: winston.format.simple(),
   transports: [
     new winston.transports.Console(),
@@ -12,15 +11,18 @@ const logger = new winston.createLogger({
 });
 
 function logInfo(ip, msg) {
-  logger.info('[' + ip + '] ' + msg);
+  var d = new Date().toISOString().replace(/T/, ' ').replace(/Z/, '')
+  logger.info(d + ' [' + ip + '] ' + msg);
 }
 
 function logWarn(ip, msg) {
-  logger.warn('[' + ip + '] ' + msg);
+  var d = new Date().toISOString().replace(/T/, ' ').replace(/Z/, '')
+  logger.warn(d + ' [' + ip + '] ' + msg);
 }
 
 function logError(ip, msg) {
-  logger.error('[' + ip + '] ' + msg);
+  var d = new Date().toISOString().replace(/T/, ' ').replace(/Z/, '')
+  logger.error(d + ' [' + ip + '] ' + msg);
 }
 
 // Create web server
@@ -45,7 +47,7 @@ var server = http.createServer(function (request, response) {
   if (request.method == 'GET') {
     if (request.url == '/') { // check the URL of the current request
 
-      logInfo(ip_string, 'Received request ' + request.method);
+      logInfo(ip_string, 'Received GET request');
 
       // Set response header
       response.writeHead(200, { 'Content-Type': 'application/json' });
@@ -54,11 +56,11 @@ var server = http.createServer(function (request, response) {
       response.write(JSON.stringify({ ip: ip_string }));
       response.end();
     } else {
-      logWarn(ip_string, 'Ignoring invalid request PATH=' + request.url);
+      logWarn(ip_string, 'Ignoring invalid GET request on path:' + request.url);
       response.end();
     }
   } else {
-    logWarn(ip_string, 'Ignoring invalid request METHOD=' + request.method);
+    logWarn(ip_string, 'Ignoring invalid ' + request.method + ' request on path:' + request.url);
     response.end();
   }
 });
